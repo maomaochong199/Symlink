@@ -39,8 +39,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Symlink.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <SourceRoot Include="$(MSBuildThisFileDirectory)" />
@@ -90,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="b446286604-8.ico" />
+    <Content Include="Symlink.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

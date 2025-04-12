@@ -3,6 +3,8 @@ using System.Diagnostics; // 用于执行CMD命令
 using System.IO; // 用于检查文件是否存在
 using System.Windows.Forms;
 
+using System.Collections.Specialized;
+
 // 作者: Octanum
 namespace Symlink
 {
@@ -16,6 +18,11 @@ namespace Symlink
             this.AllowDrop = true;
             this.textBox_Link.AllowDrop = true;
             this.textBox_Target.AllowDrop = true;
+
+
+            // 为两个文本框添加KeyDown事件处理
+            this.textBox_Link.KeyDown += new KeyEventHandler(TextBox1_KeyDown);
+            this.textBox_Target.KeyDown += new KeyEventHandler(TextBox2_KeyDown);
 
             // 为textBox_Link和textBox_Target添加事件处理程序
             this.textBox_Link.DragEnter += new DragEventHandler(textBox_DragEnter);
@@ -58,6 +65,9 @@ namespace Symlink
 
 
 
+
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // 设置所有选项
@@ -71,6 +81,66 @@ namespace Symlink
 
             UpdateCMDCommand();
         }
+
+
+
+
+        private void TextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            // 检测 Ctrl+V 组合键
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                // 检查剪贴板中是否有文件路径
+                if (Clipboard.ContainsFileDropList())
+                {
+                    // 获取剪贴板中的文件路径
+                    StringCollection files = Clipboard.GetFileDropList();
+                    if (files.Count > 0)
+                    {
+                        string firstPath = files[0]; // 获取第一个路径
+
+                        // 选项1: 如果你想要完整的文件路径
+                        textBox_Link.Text = firstPath;
+
+                        // 选项2: 如果你只想要文件所在的目录
+                        // string directory = Path.GetDirectoryName(firstPath);
+                        // textBox2_Target.Text = directory;
+
+                        e.Handled = true; // 阻止默认的粘贴行为
+                    }
+                }
+            }
+        }
+
+
+        private void TextBox2_KeyDown(object sender, KeyEventArgs e)
+        {
+            // 检测 Ctrl+V 组合键
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                // 检查剪贴板中是否有文件路径
+                if (Clipboard.ContainsFileDropList())
+                {
+                    // 获取剪贴板中的文件路径
+                    StringCollection files = Clipboard.GetFileDropList();
+                    if (files.Count > 0)
+                    {
+                        string firstPath = files[0]; // 获取第一个路径
+
+                        // 选项1: 如果你想要完整的文件路径
+                        textBox_Target.Text = firstPath;
+
+                        // 选项2: 如果你只想要文件所在的目录
+                        // string directory = Path.GetDirectoryName(firstPath);
+                        // textBox2_Target.Text = directory;
+
+                        e.Handled = true; // 阻止默认的粘贴行为
+                    }
+                }
+            }
+        }
+
+
 
         private void comboBox_Type_SelectedIndexChanged(object sender, EventArgs e)
         {
